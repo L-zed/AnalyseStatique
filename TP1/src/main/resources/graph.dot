@@ -1,0 +1,8 @@
+digraph "graph" {
+	"Test.printSwitchTest()"->"PrintStream.println()";
+	"Test.initAttr3List()"->"List<Integer>.add()";
+	"Test.initAttr3List()"->"List<Integer>.size()";
+	"Test.initAttr3List()"->"List<Integer>.remove()";
+	"Main.main()"->"Test.initAttr3List()";
+	"Main.main()"->"PrintStream.println()";
+}

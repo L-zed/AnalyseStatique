@@ -4,7 +4,7 @@ import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import visitors.MethodDeclarationVisitor;
-import visitors.ClassDeclarationVisitor;
+import visitors.ClassVisitor;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +18,7 @@ public class ClassMethods {
     }
 
     public int getNumberOfClasses(ArrayList<File> javaFiles, ASTCreator astCreator) throws IOException {
-        ClassDeclarationVisitor classDeclarationVisitor = new ClassDeclarationVisitor();
+        ClassVisitor classDeclarationVisitor = new ClassVisitor();
         for( File javaFile : javaFiles){
             String content = FileUtils.readFileToString(javaFile);
             CompilationUnit cu = astCreator.parse(content.toCharArray());
@@ -29,7 +29,7 @@ public class ClassMethods {
 
     public List<String> getClassesHaveHighestMethods(ArrayList<File> javaFiles, ASTCreator astCreator)
             throws IOException {
-        ClassDeclarationVisitor classDeclarationVisitor = new ClassDeclarationVisitor();
+        ClassVisitor classDeclarationVisitor = new ClassVisitor();
         Map<TypeDeclaration, Integer> classesNbMethods = new HashMap<>();
         for( File javaFile : javaFiles){
             String content = FileUtils.readFileToString(javaFile);
@@ -60,7 +60,7 @@ public class ClassMethods {
 
     public List<String> getClassesHaveHighestFields(ArrayList<File> javaFiles, ASTCreator astCreator)
             throws IOException {
-        ClassDeclarationVisitor classDeclarationVisitor = new ClassDeclarationVisitor();
+        ClassVisitor classDeclarationVisitor = new ClassVisitor();
         Map<TypeDeclaration, Integer> classesNbField = new HashMap<>();
         for( File javaFile : javaFiles){
             String content = FileUtils.readFileToString(javaFile);
@@ -102,7 +102,7 @@ public class ClassMethods {
                                                   ArrayList<File> javaFiles,
                                                   ASTCreator astCreator) throws IOException {
         List<TypeDeclaration> classesWithMethodX = new ArrayList<>();
-        ClassDeclarationVisitor classDeclarationVisitor = new ClassDeclarationVisitor();
+        ClassVisitor classDeclarationVisitor = new ClassVisitor();
         for( File javaFile : javaFiles){
             String content = FileUtils.readFileToString(javaFile);
             CompilationUnit cu = astCreator.parse(content.toCharArray());

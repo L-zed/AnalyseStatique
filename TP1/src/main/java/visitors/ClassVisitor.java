@@ -6,7 +6,7 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClassDeclarationVisitor extends ASTVisitor {
+public class ClassVisitor extends ASTVisitor {
     List<TypeDeclaration> classes = new ArrayList<>();
 
     @Override

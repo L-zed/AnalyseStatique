@@ -58,7 +58,6 @@ public class Graph {
             }
         }
         }
-
         methodInvocations.stream().distinct().collect(Collectors.toList()).forEach(methodInvocation -> {
             try {
                 writer.write(methodInvocation);

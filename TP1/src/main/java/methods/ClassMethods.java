@@ -1,10 +1,10 @@
-package questions;
+package methods;
 
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import visitors.MethodDeclarationVisitor;
-import visitors.TypeDeclarationVisitor;
+import visitors.ClassDeclarationVisitor;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,30 +18,30 @@ public class ClassMethods {
     }
 
     public int getNumberOfClasses(ArrayList<File> javaFiles, ASTCreator astCreator) throws IOException {
-        TypeDeclarationVisitor typeDeclarationVisitor = new TypeDeclarationVisitor();
+        ClassDeclarationVisitor classDeclarationVisitor = new ClassDeclarationVisitor();
         for( File javaFile : javaFiles){
             String content = FileUtils.readFileToString(javaFile);
             CompilationUnit cu = astCreator.parse(content.toCharArray());
-            cu.accept(typeDeclarationVisitor);
+            cu.accept(classDeclarationVisitor);
         }
-        return typeDeclarationVisitor.getClasses().size();
+        return classDeclarationVisitor.getClasses().size();
     }
 
     public List<String> getClassesHaveHighestMethods(ArrayList<File> javaFiles, ASTCreator astCreator)
             throws IOException {
-        TypeDeclarationVisitor typeDeclarationVisitor = new TypeDeclarationVisitor();
+        ClassDeclarationVisitor classDeclarationVisitor = new ClassDeclarationVisitor();
         Map<TypeDeclaration, Integer> classesNbMethods = new HashMap<>();
         for( File javaFile : javaFiles){
             String content = FileUtils.readFileToString(javaFile);
             CompilationUnit cu = astCreator.parse(content.toCharArray());
-            cu.accept(typeDeclarationVisitor);
+            cu.accept(classDeclarationVisitor);
         }
 
-        for (TypeDeclaration nodeClass : typeDeclarationVisitor.getClasses()){
+        for (TypeDeclaration nodeClass : classDeclarationVisitor.getClasses()){
             classesNbMethods.put( nodeClass, nodeClass.getMethods().length);
         }
 
-        tenPercentClasses = (int) Math.ceil (0.1*(typeDeclarationVisitor.getClasses().size()));
+        tenPercentClasses = (int) Math.ceil (0.1*(classDeclarationVisitor.getClasses().size()));
 
         List<TypeDeclaration>  classesList = classesNbMethods.entrySet()
                 .stream()
@@ -60,19 +60,19 @@ public class ClassMethods {
 
     public List<String> getClassesHaveHighestFields(ArrayList<File> javaFiles, ASTCreator astCreator)
             throws IOException {
-        TypeDeclarationVisitor typeDeclarationVisitor = new TypeDeclarationVisitor();
+        ClassDeclarationVisitor classDeclarationVisitor = new ClassDeclarationVisitor();
         Map<TypeDeclaration, Integer> classesNbField = new HashMap<>();
         for( File javaFile : javaFiles){
             String content = FileUtils.readFileToString(javaFile);
             CompilationUnit cu = astCreator.parse(content.toCharArray());
-            cu.accept(typeDeclarationVisitor);
+            cu.accept(classDeclarationVisitor);
         }
 
-        for (TypeDeclaration nodeClass : typeDeclarationVisitor.getClasses()){
+        for (TypeDeclaration nodeClass : classDeclarationVisitor.getClasses()){
             classesNbField.put( nodeClass, nodeClass.getFields().length);
         }
 
-         tenPercentClasses = (int) Math.ceil (0.1*(typeDeclarationVisitor.getClasses().size()));
+         tenPercentClasses = (int) Math.ceil (0.1*(classDeclarationVisitor.getClasses().size()));
 
         List<TypeDeclaration>  classesList = classesNbField.entrySet()
                 .stream()
@@ -102,14 +102,14 @@ public class ClassMethods {
                                                   ArrayList<File> javaFiles,
                                                   ASTCreator astCreator) throws IOException {
         List<TypeDeclaration> classesWithMethodX = new ArrayList<>();
-        TypeDeclarationVisitor typeDeclarationVisitor = new TypeDeclarationVisitor();
+        ClassDeclarationVisitor classDeclarationVisitor = new ClassDeclarationVisitor();
         for( File javaFile : javaFiles){
             String content = FileUtils.readFileToString(javaFile);
             CompilationUnit cu = astCreator.parse(content.toCharArray());
-            cu.accept(typeDeclarationVisitor);
+            cu.accept(classDeclarationVisitor);
         }
 
-        for (TypeDeclaration typeDeclaration : typeDeclarationVisitor.getClasses()){
+        for (TypeDeclaration typeDeclaration : classDeclarationVisitor.getClasses()){
             MethodDeclarationVisitor methodDeclarationVisitor =new MethodDeclarationVisitor();
             typeDeclaration.accept(methodDeclarationVisitor);
             if(methodDeclarationVisitor.getMethods().size() > x){

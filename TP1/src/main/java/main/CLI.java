@@ -1,18 +1,12 @@
 package main;
 
-import questions.*;
+import methods.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class CLI {
-    public static final String projectPath =
-            "/Users/lylia/Desktop/Architectures-Logicielles-Distribu-es/Rest/hotelServiceAcapulco";
-    public static final String projectSourcePath =
-            "/Users/lylia/Desktop/Architectures-Logicielles-Distribu-es/Rest/hotelServiceAcapulco/src";
-    public static final String jrePath = "/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home";
-
 
     public static ArrayList<File> listJavaFilesFromFolder(final File folder) {
         ArrayList<File> javaFiles = new ArrayList<>();
@@ -38,23 +32,21 @@ public class CLI {
         System.out.println("Welcome this application help you to analyze the source code of an application" +"\n");
         //Path application
 
-        String path;
+        String projectSourcePath;
         System.out.println("Please enter your project source path");
         java.util.Scanner entree1 =   new java.util.Scanner(System.in);
-        path = entree1.nextLine();
+        projectSourcePath = entree1.nextLine();
 
         // Scan jre path
-        String jre;
+        String jrePath;
         System.out.println("Please enter your project jre path");
         java.util.Scanner entree2 =   new java.util.Scanner(System.in);
-        jre = entree1.nextLine();
+        jrePath = entree1.nextLine();
 
         //Create AST
-        final File folder = new File(path);
+        final File folder = new File(projectSourcePath);
         ArrayList<File> javaFiles = listJavaFilesFromFolder(folder);
         ASTCreator ast = new ASTCreator(projectSourcePath, jrePath);
-        //final File folder = new File(projectSourcePath);
-        //ArrayList<File> javaFiles = listJavaFilesFromFolder(folder);
 
         // Menu
         System.out.println("\n" +
@@ -71,18 +63,20 @@ public class CLI {
                 "Enter 11 for the classes that have more than X methods  " + "\n"+
                 "Enter 12 for The 10% of methods with the highest number of lines of code" + "\n"+
                 "Enter 13 for The maximum number of parameters in relation to all the methods of the the application" +"\n"+
-                "Enter 0 to exit" + "\n");
+                "Enter 0 to exit and have the caller graph" + "\n");
 
         ClassMethods classNumber = new ClassMethods();
 
         //Number Method
-        MethodMethods methodNumber = new MethodMethods();
-        int nbMethods = methodNumber.getNumberOfMethods(javaFiles, ast);
+        MethodMethods methodMethods = new MethodMethods();
+        int nbMethods = methodMethods.getNumberOfMethods(javaFiles, ast);
 
-        FieldMethods fieldNumber = new FieldMethods();
-        int nbFields = fieldNumber.getNumberOfFields(javaFiles, ast);
 
-        LineNumber lineNumber = new LineNumber();
+        FieldMethods fieldMethods = new FieldMethods();
+        int nbFields = fieldMethods.getNumberOfFields(javaFiles, ast);
+
+
+        LineMethods lineMethods = new LineMethods();
 
         int entree;
         do{
@@ -96,7 +90,7 @@ public class CLI {
                             " classes");
                     break;
                 case 2 :
-                    int nbLines = lineNumber.getNumberOfLines(javaFiles, ast);
+                    int nbLines = lineMethods.getNumberOfLines(javaFiles, ast);
                     System.out.println("In this application there are " +
                             nbLines +
                             " lines");
@@ -123,7 +117,7 @@ public class CLI {
                 case 6 :
                     System.out.println(
                             "Average number of methods lines " +
-                            lineNumber.averageNumberMethodLines(javaFiles, ast));
+                            lineMethods.averageNumberMethodLines(javaFiles, ast));
                     break;
                 case 7 :
                     System.out.println(
@@ -147,81 +141,24 @@ public class CLI {
                     System.out.println("Enter number of methods ");
                     java.util.Scanner entree4 =   new java.util.Scanner(System.in);
                     x = entree4.nextInt();
-                    System.out.println("Classes that have more than x method  : " +
+                    System.out.println("Classes that have more than "+ x +" method  : " +
                             classNumber.getClassesThatHaveMethodX(x, javaFiles, ast));
 
                 case 12 :
-                    System.out.println("to do");
-                    //TODO
+                    System.out.println("10% of methods that have the most number of lines "
+                            + methodMethods.getMethodsHaveHighestMethods(javaFiles,ast));
+
                     break;
                 case 13 :
                     System.out.println(
                             "maximum number of parameters in relation to all the methods of the the application" +
-                            methodNumber.getHighestNumberOfParameter(javaFiles,ast));
+                            methodMethods.getHighestNumberOfParameter(javaFiles,ast));
             }
             if (entree != 0){
                 System.out.println("enter an other number");
             }
         }while (entree != 0);
 
-
-       /* //Print number of Classes
-        ClassMethods classNumber = new ClassMethods();
-        System.out.println("In this application there are " +
-                classNumber.getNumberOfClasses(javaFiles, ast) +
-                " classes");
-
-        //Print number of lines
-        LineNumber lineNumber = new LineNumber();
-        int nbLines = lineNumber.getNumberOfLines(javaFiles, ast);
-        System.out.println("In this application there are " +
-                 nbLines +
-                " lines");
-
-        //Print number of Methods
-        MethodMethods methodNumber = new MethodMethods();
-        int nbMethods = methodNumber.getNumberOfMethods(javaFiles, ast);
-        System.out.println("In this application there are " +
-                nbMethods +
-                " methods");
-
-        // Print number of packages
-        PackageMethods packageNumber = new PackageMethods();
-        int nbPackages = packageNumber.gtePackageNumber( javaFiles, ast);
-        System.out.println(
-                "In this application there are " +
-                nbPackages +
-                " packages");
-
-
-
-        // Print average number of methods of the application
-        double averageMethods = (double)nbMethods/(double)javaFiles.size();
-        System.out.println(
-                "Average number of methods of the application " +
-                averageMethods );
-
-        // Print nuber of Fields
-        FieldMethods fieldNumber = new FieldMethods();
-        int nbFields = fieldNumber.getNumberOfFields(javaFiles, ast);
-        System.out.println(
-                "In this application there are " + nbFields+ " fields");
-
-        //Print 10% of classes that have most methods
-        System.out.println("10% of classes that have the most number of methods : " +
-                classNumber.getClassesHaveHighestMethods(javaFiles,ast));
-        System.out.println("10% of classes that have the most number of fields : " +
-                classNumber.getClassesHaveHighestFields(javaFiles,ast));
-
-        //Classes that have mot methods and fields
-        System.out.println("Classes that have most methods and fields : " +
-                classNumber.getClassesWithHighestMethodsFields(javaFiles, ast));
-
-        //Classes with method x
-        String method = "methode";
-        System.out.println("Classes that implement method x : " +
-                classNumber.getClassesThatHaveMethodX(method, javaFiles, ast));
-*/
         Graph graph = new Graph("graph");
         graph.createCallGraph(ast, javaFiles);
     }

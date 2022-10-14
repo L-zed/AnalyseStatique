@@ -7,18 +7,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TypeDeclarationVisitor extends ASTVisitor {
-    List<TypeDeclaration> classes = new ArrayList<>();
+    List<TypeDeclaration> typeDeclarations = new ArrayList<>();
 
     @Override
     public boolean visit(TypeDeclaration node) {
         if (!node.isInterface()){
-            classes.add(node);
+            typeDeclarations.add(node);
         }
 
         return super.visit(node);
     }
 
-    public List<TypeDeclaration> getClasses() {
-        return classes;
+    public List<TypeDeclaration> getTypeDeclarations() {
+        return typeDeclarations;
     }
 }

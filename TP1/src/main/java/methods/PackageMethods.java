@@ -1,4 +1,4 @@
-package questions;
+package methods;
 
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.core.dom.CompilationUnit;

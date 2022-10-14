@@ -1,4 +1,4 @@
-package questions;
+package methods;
 
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;

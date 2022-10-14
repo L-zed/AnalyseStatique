@@ -1,7 +1,7 @@
 # AnalyseStatique
 Ce projet est une application mavevn utilisant Eclipse JDT ASTParser. Cette application permet l’analyse statique de programme.
 
-##Fonctionnalités
+#Fonctionnalités
 Cette application permet d'obtenir les informations statistique suivantes :
 
 Le nombre de classes de l'application.

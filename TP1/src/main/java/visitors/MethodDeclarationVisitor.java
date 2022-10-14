@@ -13,6 +13,7 @@ public class MethodDeclarationVisitor extends ASTVisitor {
         this.methods = new ArrayList<>();
     }
 
+    @Override
     public boolean visit(MethodDeclaration node) {
         methods.add(node);
         return super.visit(node);
